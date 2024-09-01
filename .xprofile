@@ -1,0 +1,21 @@
+# Keyboard layout
+setxkbmap se
+# Refresh rate
+xrandr --rate 144
+# Disable mouse acceleration
+xinput set-prop "Glorious Model O Wireless" "libinput Accel Speed" -1
+# Keyboard shortcut daemon
+sxhkd &
+# Notification daemon
+dunst &
+# Audio
+# pipewire &
+# pipewire-pulse &
+# wireplumber &
+pulseaudio &
+# Wallpaper
+feh Pictures/wallpapers/minimal_moon.jpeg --no-fehbg --bg-fill &
+# Statusbar
+dwmblocks &
+# Compositor
+picom &
