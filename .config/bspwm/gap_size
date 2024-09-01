@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# First argument is "inc" or "dec" for increase or decrease gaps
+# Second argument is how many pixels the gaps will be adjusted by
+
+# Get the current size of gaps
+GAPSPRE=$(cat /tmp/bspwm-gaps.txt)
+DELTA=$2
+
+# Check if no argument is provided
+if [[ -z $1 ]]; then
+    echo "Error: No action specified (inc/dec)"
+    exit 1
+fi
+
+# Check if DELTA is a valid number
+if ! [[ "$DELTA" =~ ^[0-9]+$ ]]; then
+    echo "Error: Delta must be a positive integer."
+    exit 1
+fi
+
+# Increase gaps
+if [[ $1 == "inc" ]]; then
+    GAPSPOST=$(( GAPSPRE + DELTA ))
+# Decrease gaps
+elif [[ $1 == "dec" && $(( GAPSPRE - DELTA )) -ge 0 ]]; then
+    GAPSPOST=$(( GAPSPRE - DELTA ))
+else
+    GAPSPOST=0
+fi
+
+# Save the new gap size
+echo ${GAPSPOST} > /tmp/bspwm-gaps.txt
+bspc config window_gap ${GAPSPOST}
