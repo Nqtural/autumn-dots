@@ -1,0 +1,57 @@
+diff --git a/config.def.h b/config.def.h
+index 1edb647..7174ac7 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -2,6 +2,7 @@
+ /* Default settings; can be overriden by command line. */
+ 
+ static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
++static int caret_height = 16;               /* -ch option; set default caret height */
+ /* -fn option overrides fonts[0]; default X11 font or font set */
+ static const char *fonts[] = {
+ 	"monospace:size=10"
+diff --git a/dmenu.1 b/dmenu.1
+index 323f93c..780b034 100644
+--- a/dmenu.1
++++ b/dmenu.1
+@@ -20,6 +20,8 @@ dmenu \- dynamic menu
+ .IR color ]
+ .RB [ \-sf
+ .IR color ]
++.RB [ \-ch
++.IR caret_height ]
+ .RB [ \-w
+ .IR windowid ]
+ .P
+@@ -75,6 +77,9 @@ defines the selected background color.
+ .BI \-sf " color"
+ defines the selected foreground color.
+ .TP
++.BI \-ch " caret_height"
++defines caret height.
++.TP
+ .B \-v
+ prints version information to stdout, then exits.
+ .TP
+diff --git a/dmenu.c b/dmenu.c
+index 40f93e0..809a169 100644
+--- a/dmenu.c
++++ b/dmenu.c
+@@ -164,7 +164,7 @@ drawmenu(void)
+ 	curpos = TEXTW(text) - TEXTW(&text[cursor]);
+ 	if ((curpos += lrpad / 2 - 1) < w) {
+ 		drw_setscheme(drw, scheme[SchemeNorm]);
+-		drw_rect(drw, x + curpos, 2, 2, bh - 4, 1, 0);
++		drw_rect(drw, x + curpos, bh / 2 - caret_height / 2, 2, caret_height, 1, 0);
+ 	}
+ 
+ 	if (lines > 0) {
+@@ -716,7 +716,7 @@ static void
+ usage(void)
+ {
+ 	die("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
+-	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
++	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-ch caretheight] [-w windowid]");
+ }
+ 
+ int
